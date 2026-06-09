@@ -24,9 +24,12 @@ function isNewer($new: string, old: string) {
     const newParts = $new.slice(4).split(".").map(Number);
     const oldParts = old.slice(4).split(".").map(Number);
 
-    for (let i = 0; i < oldParts.length; i++) {
-        if (newParts[i] > oldParts[i]) return true;
-        if (newParts[i] < oldParts[i]) return false;
+    const length = Math.max(newParts.length, oldParts.length);
+    for (let i = 0; i < length; i++) {
+        const n = newParts[i] ?? 0;
+        const o = oldParts[i] ?? 0;
+        if (n > o) return true;
+        if (n < o) return false;
     }
     return false;
 }
