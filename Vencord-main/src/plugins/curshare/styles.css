@@ -1,0 +1,74 @@
+.curshare-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999999;
+    overflow: hidden;
+}
+
+.curshare-cursor-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+    transition: transform 0.04s linear;
+    pointer-events: none;
+    will-change: transform;
+    z-index: 1000000;
+}
+
+.curshare-cursor-svg {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0 2px 4px rgb(0 0 0 / 60%));
+}
+
+.curshare-nametag {
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    background: rgb(18 19 22 / 85%);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    border: 1px solid rgb(255 255 255 / 15%);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 40%);
+    backdrop-filter: blur(4px);
+    font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.curshare-stream-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    margin: 0 4px;
+    border-radius: 4px;
+    background: rgb(0 0 0 / 40%);
+    color: #dbdee1;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    user-select: none;
+}
+
+.curshare-stream-btn:hover {
+    background: rgb(255 255 255 / 15%);
+    color: #fff;
+}
+
+.curshare-stream-btn.active {
+    background: #5865f2;
+    color: #fff;
+}
+
+.curshare-stream-btn svg {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+}
