@@ -8,6 +8,7 @@ import { openNotificationLogModal } from "@api/Notifications/notificationLog";
 import { isPluginEnabled, isSettingDisabled, isSettingHidden, plugins } from "@api/PluginManager";
 import { Settings, useSettings } from "@api/Settings";
 import { openPluginModal, openSettingsTabModal, PluginsTab, ThemesTab } from "@components/settings";
+import { getCustomPluginPriority } from "@components/settings/tabs/plugins";
 import { useAwaiter } from "@utils/react";
 import { wordsFromCamel, wordsToTitle } from "@utils/text";
 import { OptionType, Plugin } from "@utils/types";
@@ -43,7 +44,12 @@ export function buildPluginMenuEntries(includeEmpty = false) {
     const lowerSearch = search.toLowerCase();
 
     const sortedPlugins = useMemo(() =>
-        Object.values(plugins).sort((a, b) => a.name.localeCompare(b.name)),
+        Object.values(plugins).sort((a, b) => {
+            const pA = getCustomPluginPriority(a.name);
+            const pB = getCustomPluginPriority(b.name);
+            if (pA !== pB) return pA - pB;
+            return a.name.localeCompare(b.name);
+        }),
         []
     );
 
