@@ -2,7 +2,7 @@
 cd /d "%~dp0"
 
 echo ===================================================
-echo Building Vencord with CurShare Plugin...
+echo Building Vencord with Embedded Custom Plugins...
 echo ===================================================
 
 :: 1. Check for Node.js / pnpm
@@ -34,12 +34,12 @@ echo ===================================================
 echo Building Vencord Installer CLI & GUI Executables...
 echo ===================================================
 
-cd scripts
-call node runInstaller.mjs
+call node scripts/runInstaller.mjs
 
 if %ERRORLEVEL% equ 0 (
     echo.
-    echo [SUCCESS] Vencord and CurShare plugin compiled successfully!
+    echo [SUCCESS] Vencord with custom embedded plugins compiled successfully!
+    echo [INFO] Installer executables and launchers generated in dist/Installer/
 ) else (
     echo.
     echo [INFO] Installer execution complete.

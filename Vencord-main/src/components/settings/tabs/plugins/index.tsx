@@ -49,6 +49,13 @@ import { UIElementsButton } from "./UIElements";
 export const cl = classNameFactory("vc-plugins-");
 export const logger = new Logger("PluginSettings", "#a6d189");
 
+export const NEW_CUSTOM_PLUGINS = ["AlwaysHideNonVideo", "FocusVoiceUser", "HideContextMenuItems", "CurShare"];
+
+export function getCustomPluginPriority(name: string): number {
+    const idx = NEW_CUSTOM_PLUGINS.indexOf(name);
+    return idx !== -1 ? idx : 999;
+}
+
 function ReloadRequiredCard({ required }: { required: boolean; }) {
     return (
         <Card variant={required ? "warning" : "normal"} className={cl("info-card")}>
@@ -167,10 +174,19 @@ function PluginSettings() {
 
     const pluginCount = Object.keys(Plugins).length;
     const sortedPlugins = useMemo(() =>
-        Object.values(Plugins).sort((a, b) => a.name.localeCompare(b.name)),
+        Object.values(Plugins).sort((a, b) => {
+            const pA = getCustomPluginPriority(a.name);
+            const pB = getCustomPluginPriority(b.name);
+            if (pA !== pB) return pA - pB;
+
+            const favA = Number(settings.plugins[a.name]?.isFavorite ?? false);
+            const favB = Number(settings.plugins[b.name]?.isFavorite ?? false);
+            if (favA !== favB) return favB - favA;
+
+            return a.name.localeCompare(b.name);
+        }),
         [pluginCount]
-    )
-        .toSorted((a, b) => Number(settings.plugins[b.name]?.isFavorite ?? false) - Number(settings.plugins[a.name]?.isFavorite ?? false));
+    );
 
     const hasUserPlugins = !IS_STANDALONE && Object.values(PluginMeta).some(m => m.userPlugin);
 
@@ -193,7 +209,7 @@ function PluginSettings() {
                 if (!isPluginEnabled(plugin.name)) return false;
                 break;
             case SearchStatus.NEW:
-                if (!newPlugins?.includes(plugin.name) && !PluginMeta[plugin.name]?.userPlugin) return false;
+                if (!NEW_CUSTOM_PLUGINS.includes(plugin.name) && !newPlugins?.includes(plugin.name) && !PluginMeta[plugin.name]?.userPlugin) return false;
                 break;
             case SearchStatus.USER_PLUGINS:
                 if (!PluginMeta[plugin.name]?.userPlugin) return false;
@@ -269,7 +285,7 @@ function PluginSettings() {
                     onRestartNeeded={(name, key) => changes.handleChange(`${name}.${key}`)}
                     disabled={false}
                     plugin={p}
-                    isNew={newPlugins?.includes(p.name) || PluginMeta[p.name]?.userPlugin}
+                    isNew={NEW_CUSTOM_PLUGINS.includes(p.name) || newPlugins?.includes(p.name) || PluginMeta[p.name]?.userPlugin}
                     key={p.name}
                 />
             );
