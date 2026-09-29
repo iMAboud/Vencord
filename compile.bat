@@ -5,7 +5,7 @@ echo ===================================================
 echo Building Vencord with Embedded Custom Plugins...
 echo ===================================================
 
-:: 1. Check for Node.js / pnpm
+:: Check for Node.js / pnpm
 where pnpm >nul 2>&1
 if %ERRORLEVEL% neq 0 (
     echo [INFO] pnpm not found in PATH. Checking for node...
@@ -39,10 +39,10 @@ call node scripts/runInstaller.mjs
 if %ERRORLEVEL% equ 0 (
     echo.
     echo [SUCCESS] Vencord with custom embedded plugins compiled successfully!
-    echo [INFO] Installer executables and launchers generated in dist/Installer/
+    echo [INFO] Installer executables created in Vencord-main/dist/Installer/
 ) else (
     echo.
-    echo [INFO] Installer execution complete.
+    echo [INFO] Installer build complete.
 )
 
 :EXIT
